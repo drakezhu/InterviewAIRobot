@@ -1,0 +1,11 @@
+dashscope:
+  api-key: ${DASHSCOPE_API_KEY}
+
+# 强制 UTF-8（防御性配置）
+server:
+  port: 8080
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
