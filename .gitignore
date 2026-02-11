@@ -1,16 +1,16 @@
 ### IntelliJ IDEA ###
 .idea/
-*.iws
-*.iml
-*.ipr
+backend/*.iws
+backend/*.iml
+backend/*.ipr
 .env
-out/
-!**/src/main/**/out/
-!**/src/test/**/out/
+backend/out/
+!backend/**/src/main/**/out/
+!backend/**/src/test/**/out/
 
-.gradle/
-build/
-!gradle/wrapper/
-!gradle/wrapper/gradle-wrapper.jar
-!gradle/wrapper/gradle-wrapper.properties
+backend/.gradle/
+backend/build/
+!backend/gradle/wrapper/
+!backend/gradle/wrapper/gradle-wrapper.jar
+!backend/gradle/wrapper/gradle-wrapper.properties
 conversations/
