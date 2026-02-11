@@ -10,7 +10,7 @@ public class AiAgentApplication {
         System.setProperty("file.encoding", "UTF-8"); // 确保 JVM 使用 UTF-8
 
         Dotenv dotenv = Dotenv.configure()
-                .ignoreIfMissing() // 如果没有 .env 不报错
+//                .ignoreIfMissing() // 如果没有 .env 不报错
                 .load();
 
         // 👇 第二步：把 .env 的值设为系统属性（Spring Boot 会读取）

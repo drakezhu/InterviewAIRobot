@@ -3,7 +3,7 @@
 backend/*.iws
 backend/*.iml
 backend/*.ipr
-.env
+backend/.env
 backend/out/
 !backend/**/src/main/**/out/
 !backend/**/src/test/**/out/
