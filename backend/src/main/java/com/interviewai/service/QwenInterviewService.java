@@ -1,28 +1,21 @@
-package com.example.aiagent.service;
+package com.interviewai.service;
 
-import com.alibaba.dashscope.aigc.generation.Generation;
-import com.alibaba.dashscope.aigc.generation.GenerationParam;
-import com.alibaba.dashscope.aigc.generation.GenerationResult;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import jakarta.annotation.PostConstruct;
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
-// QwenInterviewService.java - 无 SDK 版本
 
 @Service
 public class QwenInterviewService {
@@ -77,21 +70,21 @@ public class QwenInterviewService {
 
     private String buildRequestBody(String userAnswer) {
         return """
-        {
-          "model": "qwen-turbo",
-          "input": {
-            "messages": [
-              {"role": "system", "content": "你是一位资深 Java 面试官..."},
-              {"role": "user", "content": "%s"}
-            ]
-          },
-           "parameters": {
-                "max_tokens": 200,
-                "temperature": 0.3,
-                "result_format": "message"
-           }
-        }
-        """.formatted(userAnswer.replace("\"", "\\\""));
+                {
+                  "model": "qwen-turbo",
+                  "input": {
+                    "messages": [
+                      {"role": "system", "content": "你是一位资深 Java 面试官..."},
+                      {"role": "user", "content": "%s"}
+                    ]
+                  },
+                   "parameters": {
+                        "max_tokens": 200,
+                        "temperature": 0.3,
+                        "result_format": "message"
+                   }
+                }
+                """.formatted(userAnswer.replace("\"", "\\\""));
     }
 
     private void saveConversation(String userAnswer, String aiResponse) throws IOException {
