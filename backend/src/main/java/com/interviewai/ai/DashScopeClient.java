@@ -12,6 +12,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -75,6 +76,44 @@ public class DashScopeClient {
 
         // 提取 content
         Map<String, Object> root = objectMapper.readValue(response.body(), Map.class);
+        Map<String, Object> output = (Map<String, Object>) root.get("output");
+        List<Map<String, Object>> choices = (List<Map<String, Object>>) output.get("choices");
+        Map<String, Object> message = (Map<String, Object>) choices.get(0).get("message");
+
+        return (String) message.get("content");
+    }
+
+    public String callForReport(String evaluationPrompt) throws Exception {
+        List<Map<String, String>> messages = new ArrayList<>();
+        messages.add(Map.of("role", "user", "content", evaluationPrompt));
+
+        Map<String, Object> requestBody = Map.of(
+                "model", "qwen-plus",
+                "input", Map.of("messages", messages),
+                "parameters", Map.of(
+                        "max_tokens", 800,
+                        "temperature", 0.2,
+                        "result_format", "message"
+                )
+        );
+
+        String jsonBody = new ObjectMapper().writeValueAsString(requestBody);
+
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation"))
+                .header("Authorization", "Bearer " + apiKey)
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(jsonBody, StandardCharsets.UTF_8))
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() != 200) {
+            throw new RuntimeException("DashScope error: " + response.body());
+        }
+
+        Map<String, Object> root = new ObjectMapper().readValue(response.body(), Map.class);
         Map<String, Object> output = (Map<String, Object>) root.get("output");
         List<Map<String, Object>> choices = (List<Map<String, Object>>) output.get("choices");
         Map<String, Object> message = (Map<String, Object>) choices.get(0).get("message");

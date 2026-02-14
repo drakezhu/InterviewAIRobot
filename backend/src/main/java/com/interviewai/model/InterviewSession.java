@@ -4,7 +4,6 @@ import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Data
 public class InterviewSession {
@@ -16,12 +15,6 @@ public class InterviewSession {
         this.sessionId = sessionId;
         this.conversation = new ArrayList<>();
     }
-
-    // ===== Getters =====
-    public String getSessionId() { return sessionId; }
-    public List<Message> getConversation() { return conversation; }
-    public boolean isCompleted() { return completed; }
-    public void setCompleted(boolean completed) { this.completed = completed; }
 
     // ===== 工具方法 =====
     public void addMessage(String role, String content) {

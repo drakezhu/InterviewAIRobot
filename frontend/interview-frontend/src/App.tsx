@@ -84,19 +84,76 @@ const App: React.FC = () => {
 
         {/* 面试完成 */}
         {finalReport && (
-          <div className="space-y-4">
-            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-              <h2 className="text-xl font-semibold text-green-800 mb-2">🎉 面试完成！</h2>
-              <p className="text-green-700">{finalReport.message}</p>
+  <div className="space-y-6">
+    {/* 总分展示 */}
+    <div className="text-center bg-gradient-to-r from-indigo-500 to-purple-600 text-white p-6 rounded-xl">
+      <div className="text-5xl font-bold mb-2">{finalReport.overallScore}/10</div>
+      <div className="text-lg opacity-90">综合能力评分</div>
+    </div>
+
+    {/* 优点 & 不足 */}
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+        <h3 className="font-bold text-green-800 mb-2 flex items-center">
+          ✅ 优势
+        </h3>
+        <ul className="list-disc pl-5 space-y-1 text-green-700">
+          {finalReport.strengths.map((s, i) => (
+            <li key={i}>{s}</li>
+          ))}
+        </ul>
+      </div>
+      
+      <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+        <h3 className="font-bold text-red-800 mb-2 flex items-center">
+          ⚠️ 待提升
+        </h3>
+        <ul className="list-disc pl-5 space-y-1 text-red-700">
+          {finalReport.weaknesses.map((w, i) => (
+            <li key={i}>{w}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    {/* 改进建议 */}
+    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+      <h3 className="font-bold text-blue-800 mb-2">💡 发展建议</h3>
+      <ul className="list-disc pl-5 space-y-1 text-blue-700">
+        {finalReport.suggestions.map((s, i) => (
+          <li key={i}>{s}</li>
+        ))}
+      </ul>
+    </div>
+
+    {/* 详细反馈（可选折叠） */}
+    {finalReport.detailedFeedback.length > 0 && (
+      <div className="border-t pt-4">
+        <h3 className="font-bold text-gray-800 mb-3">📝 分轮次反馈</h3>
+        <div className="space-y-4">
+          {finalReport.detailedFeedback.map((fb, idx) => (
+            <div key={idx} className="border border-gray-200 rounded-lg p-3">
+              <div className="font-medium text-gray-700 mb-1">Q{idx + 1}: {fb.question}</div>
+              <div className="text-sm text-gray-600 mb-2">你的回答: {fb.userAnswer}</div>
+              <div className="flex justify-between items-center">
+                <span className="text-xs bg-gray-100 px-2 py-1 rounded">得分: {fb.score}/10</span>
+                <span className="text-sm text-gray-700">{fb.comments}</span>
+              </div>
             </div>
-            <button
-              onClick={() => window.location.reload()}
-              className="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition"
-            >
-              重新开始面试
-            </button>
-          </div>
-        )}
+          ))}
+        </div>
+      </div>
+    )}
+
+    {/* 重新开始按钮 */}
+    <button
+      onClick={() => window.location.reload()}
+      className="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition"
+    >
+      重新开始面试
+    </button>
+  </div>
+)}
 
         {/* 面试进行中 */}
         {currentQuestion && (

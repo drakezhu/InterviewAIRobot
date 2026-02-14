@@ -1,6 +1,5 @@
 package com.interviewai.controller;
 
-import com.interviewai.service.QwenInterviewService;
 import org.springframework.web.bind.annotation.*;
 
 import com.interviewai.model.InterviewSession;
