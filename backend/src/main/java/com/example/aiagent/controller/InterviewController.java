@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/interview")
+@CrossOrigin(origins = "http://localhost:5173")
 public class InterviewController {
 
     private final QwenInterviewService interviewService;
@@ -19,9 +20,8 @@ public class InterviewController {
      * Body: {"answer": "我的回答内容"}
      */
     @PostMapping("/evaluate")
-    public EvaluationResponse evaluate(@RequestBody EvaluationRequest request) {
-        String feedback = interviewService.evaluateAnswer(request.getAnswer());
-        return new EvaluationResponse(feedback);
+    public String evaluate(@RequestBody EvaluationRequest request) {
+        return interviewService.evaluateAnswer(request.getAnswer());
     }
 
     // DTO 类
@@ -30,16 +30,5 @@ public class InterviewController {
 
         public String getAnswer() { return answer; }
         public void setAnswer(String answer) { this.answer = answer; }
-    }
-
-    public static class EvaluationResponse {
-        private String feedback;
-
-        public EvaluationResponse(String feedback) {
-            this.feedback = feedback;
-        }
-
-        public String getFeedback() { return feedback; }
-        public void setFeedback(String feedback) { this.feedback = feedback; }
     }
 }
