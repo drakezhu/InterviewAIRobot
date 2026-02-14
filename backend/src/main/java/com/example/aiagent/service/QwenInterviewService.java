@@ -54,9 +54,17 @@ public class QwenInterviewService {
 
             if (response.statusCode() == 200) {
                 JsonNode root = objectMapper.readTree(response.body());
-                String aiResponse = root.get("output").get("text").asText();
-                saveConversation(userAnswer, aiResponse);
-                return aiResponse;
+                JsonNode output = root.get("output");
+                JsonNode choices = output.get("choices");
+                if (choices != null && choices.isArray() && choices.size() > 0) {
+                    JsonNode message = choices.get(0).get("message");
+                    if (message != null) {
+                        String aiResponse = message.get("content").asText();
+                        saveConversation(userAnswer, aiResponse);
+                        return aiResponse;
+                    }
+                }
+                throw new RuntimeException("Invalid response format from DashScope");
             } else {
                 return "API 调用失败: " + response.statusCode() + " - " + response.body();
             }
@@ -70,13 +78,18 @@ public class QwenInterviewService {
     private String buildRequestBody(String userAnswer) {
         return """
         {
-          "model": "qwen-plus",
+          "model": "qwen-turbo",
           "input": {
             "messages": [
               {"role": "system", "content": "你是一位资深 Java 面试官..."},
               {"role": "user", "content": "%s"}
             ]
-          }
+          },
+           "parameters": {
+                "max_tokens": 200,
+                "temperature": 0.3,
+                "result_format": "message"
+           }
         }
         """.formatted(userAnswer.replace("\"", "\\\""));
     }
