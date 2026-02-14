@@ -1,4 +1,4 @@
-package com.example.aiagent;
+package com.interviewai;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.boot.SpringApplication;
